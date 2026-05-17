@@ -33,9 +33,17 @@ export default function Home() {
       {/* ヘッダー */}
       <header className="px-6 py-4 flex justify-between items-center border-b border-gray-100">
         <span className="font-bold text-gray-800 text-lg">スリーデート</span>
-        <span className="text-xs text-rose-500 font-medium bg-rose-50 px-3 py-1 rounded-full">
-          先行登録受付中
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-rose-500 font-medium bg-rose-50 px-3 py-1 rounded-full">
+            先行登録受付中
+          </span>
+          <button
+            onClick={() => router.push('/register')}
+            className="text-xs text-white font-bold bg-rose-500 px-3 py-1 rounded-full hover:bg-rose-600 transition-colors"
+          >
+            ログイン
+          </button>
+        </div>
       </header>
 
       {/* ファーストビュー */}
@@ -72,6 +80,18 @@ export default function Home() {
             {loading ? '送信中...' : '無料で先行登録する →'}
           </button>
         </form>
+
+        {/* 本登録への導線 */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <p className="text-xs text-gray-400 mb-2">招待コードをお持ちの方</p>
+          <button
+            onClick={() => router.push('/register')}
+            className="w-full border border-rose-300 text-rose-500 rounded-xl py-3 font-bold text-sm hover:bg-rose-50 transition-colors"
+          >
+            今すぐ会員登録する →
+          </button>
+        </div>
+
         <p className="text-xs text-gray-400 mt-3">
           登録することで利用規約・プライバシーポリシーに同意したものとみなします
         </p>
@@ -173,6 +193,14 @@ export default function Home() {
               {loading ? '送信中...' : '無料で先行登録する →'}
             </button>
           </form>
+          <div className="mt-4 pt-4 border-t border-rose-400">
+            <button
+              onClick={() => router.push('/register')}
+              className="w-full bg-rose-400 text-white rounded-xl py-3 font-bold text-sm hover:bg-rose-300 transition-colors"
+            >
+              今すぐ会員登録する →
+            </button>
+          </div>
         </div>
       </section>
 

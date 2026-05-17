@@ -20,7 +20,7 @@ export default function MyPage() {
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       setProfile(profileData)
       setLoading(false)
@@ -36,7 +36,7 @@ export default function MyPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-rose-50 flex items-center justify-center">
-        <p className="text-gray-400 text-sm">読み込み中...</p>
+        <div className="inline-block w-10 h-10 border-4 border-rose-300 border-t-rose-500 rounded-full animate-spin"></div>
       </div>
     )
   }
@@ -54,16 +54,42 @@ export default function MyPage() {
         <div className="bg-white rounded-2xl p-6 shadow-sm">
           <div className="flex items-center gap-4 mb-4">
             {profile?.photos?.[0] ? (
-              <img src={profile.photos[0]} alt="profile" className="w-16 h-16 rounded-full object-cover" />
+              <img
+                src={profile.photos[0]}
+                alt="profile"
+                className="w-16 h-16 rounded-full object-cover"
+              />
             ) : (
-              <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center text-2xl">👤</div>
+              <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center">
+                <svg className="w-8 h-8 text-rose-300" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                </svg>
+              </div>
             )}
             <div>
-              <h2 className="font-bold text-gray-800 text-lg">{profile?.name || '未設定'}</h2>
-              <p className="text-gray-500 text-sm">{profile?.age ? `${profile.age}歳` : ''} {profile?.area_preference ? `・${profile.area_preference}エリア` : ''}</p>
+              <h2 className="font-bold text-gray-800 text-lg">
+                {profile?.name || '名前未設定'}
+              </h2>
+              <p className="text-gray-500 text-sm">
+                {profile?.age ? `${profile.age}歳` : ''}
+                {profile?.age && profile?.area_preference ? ' ・ ' : ''}
+                {profile?.area_preference ? `${profile.area_preference}エリア` : ''}
+              </p>
             </div>
           </div>
-          {profile?.bio && <p className="text-gray-600 text-sm leading-relaxed border-t border-gray-50 pt-4">{profile.bio}</p>}
+
+          {/* プロフィール未設定の場合の案内 */}
+          {!profile && (
+            <div className="bg-rose-50 rounded-xl p-3 mb-4">
+              <p className="text-rose-600 text-sm text-center">プロフィールを設定してマッチングを始めましょう</p>
+            </div>
+          )}
+
+          {profile?.bio && (
+            <p className="text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+              {profile.bio}
+            </p>
+          )}
         </div>
 
         {/* ステータスカード */}
@@ -76,20 +102,20 @@ export default function MyPage() {
           </div>
         </div>
 
-        {/* プロフィール情報 */}
+        {/* プロフィール詳細 */}
         <div className="bg-white rounded-2xl p-6 shadow-sm">
           <h3 className="font-bold text-gray-800 mb-4">プロフィール</h3>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {[
               { label: '職業', value: profile?.job },
               { label: '趣味', value: profile?.hobby },
-              { label: 'エリア', value: profile?.area_preference },
-            ].map((item) => item.value && (
+              { label: '希望エリア', value: profile?.area_preference },
+            ].map((item) => item.value ? (
               <div key={item.label} className="flex justify-between items-center py-2 border-b border-gray-50">
                 <span className="text-gray-500 text-sm">{item.label}</span>
                 <span className="text-gray-800 text-sm font-medium">{item.value}</span>
               </div>
-            ))}
+            ) : null)}
           </div>
           <button
             onClick={() => router.push('/register/profile')}

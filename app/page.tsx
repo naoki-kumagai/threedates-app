@@ -38,7 +38,7 @@ export default function Home() {
             先行登録受付中
           </span>
           <button
-            onClick={() => router.push('/register')}
+            onClick={() => router.push('/login')}
             className="text-xs text-white font-bold bg-rose-500 px-3 py-1 rounded-full hover:bg-rose-600 transition-colors"
           >
             ログイン
